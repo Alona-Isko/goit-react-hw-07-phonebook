@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 
-import * as actions from '../../redux/contacts/contacts-actions';
+import * as operations from '../../redux/contacts/contacts-operations';
 import { getContacts } from '../../redux/contacts/contacts-selectors';
 import s from './ContactForm.module.css';
 
@@ -49,7 +49,7 @@ function ContactForm() {
             return alert(`${name} is already in contacts.`);
         }
         
-        dispatch(actions.addContact(name, number));
+        dispatch(operations.addContact(name, number));
         reset();
     };
 
