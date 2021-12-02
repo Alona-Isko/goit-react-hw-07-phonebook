@@ -11,10 +11,16 @@ import contactsItems from '../../contacts.json';
 
 
 const itemsReducer = createReducer(contactsItems, {
-    addContactSuccess: (state, { payload }) => [...state, payload],
+    [addContactSuccess]: (state, { payload }) => [...state, payload],
        
     [deleteContact]: (state, { payload }) =>
         state.filter(({ id }) => id !== payload),
+});
+
+const loadingReducer = createReducer(false, {
+    [addContactRequest]: () => true,
+    [addContactSuccess]: () => false,
+    [addContactError]: () => false,
 });
 
 const filterReducer = createReducer('', {
@@ -24,5 +30,6 @@ const filterReducer = createReducer('', {
 export default combineReducers({
     items: itemsReducer,
     filter: filterReducer,
+    loading: loadingReducer,
 });
     
