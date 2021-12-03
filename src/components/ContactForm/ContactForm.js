@@ -1,16 +1,14 @@
 import shortid from 'shortid';
 import { useState } from "react";
-// import { connect } from 'react-redux';
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 
-import * as operations from '../../redux/contacts/contacts-operations';
-import { getContacts } from '../../redux/contacts/contacts-selectors';
+import {operations, selectors} from '../../redux/contacts';
 import s from './ContactForm.module.css';
 
 
 function ContactForm() {
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(selectors.getContacts);
     const dispatch = useDispatch();
 
     const [name, setName] = useState('');

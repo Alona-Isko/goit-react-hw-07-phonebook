@@ -14,24 +14,24 @@ import {
 
 axios.defaults.baseURL = 'https://61a8ad8333e9df0017ea3a3c.mockapi.io';
 
-export const fetchContacts = () => async dispatch => {
+export const fetchContacts = () => dispatch => {
     dispatch(fetchContactsRequest());
 
-    try {
-        const {data} = await axios.get('/contacts');
-        dispatch(fetchContactsSuccess(data));
-    } catch (error) {
-        dispatch(fetchContactsError(error));
-    }
+    axios
+        .get('/contacts')
+        .then(({ data }) => dispatch(fetchContactsSuccess(data)))
+        .catch(error => dispatch(fetchContactsError(error)));
 };
 
-// export const fetchContacts = () => dispatch => {
+// export const fetchContacts = () => async dispatch => {
 //     dispatch(fetchContactsRequest());
 
-//     axios
-//         .get('/contacts')
-//         .then(({ data }) => dispatch(fetchContactsSuccess(data)))
-//         .catch(error => dispatch(fetchContactsError(error)));
+//     try {
+//         const {data} = await axios.get('/contacts');
+//         dispatch(fetchContactsSuccess(data));
+//     } catch (error) {
+//         dispatch(fetchContactsError(error));
+//     }
 // };
 
 export const addContact = text => dispatch => {

@@ -12,10 +12,9 @@ import {
     fetchContactsSuccess,
     fetchContactsError,
 } from './contacts-actions';
-import contactsItems from '../../contacts.json';
 
 
-const items = createReducer(contactsItems, {
+const items = createReducer([], {
     [fetchContactsSuccess]: (_, {payload}) => payload,
     [addContactSuccess]: (state, { payload }) => [...state, payload],
        
