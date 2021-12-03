@@ -1,4 +1,3 @@
-// import { connect } from "react-redux";
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { actions, selectors } from "../../redux/contacts";
