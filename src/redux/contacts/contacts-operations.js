@@ -1,9 +1,48 @@
 import axios from "axios";
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import * as actions from './contacts-actions';
+import { createAsyncThunk } from '@reduxjs/toolkit'
+// import * as actions from './contacts-actions';
 
 
 axios.defaults.baseURL = 'https://61a8ad8333e9df0017ea3a3c.mockapi.io';
+
+export const fetchContacts = createAsyncThunk(
+    'contacts/fetchContacts',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get('/contacts');
+            return data;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const addContact = createAsyncThunk(
+    'contacts/addContact',
+    async ({ name, number }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post('/contacts', {name, number});
+            return data;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const deleteContact = createAsyncThunk(
+    'contacts/deleteContact',
+    async (nameId, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`/contacts/${nameId}`);
+            return data.id;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+
+
 
 //
 // export const fetchContacts = () => dispatch => {
@@ -15,13 +54,7 @@ axios.defaults.baseURL = 'https://61a8ad8333e9df0017ea3a3c.mockapi.io';
 //         .catch(error => dispatch(fetchContactsError(error)));
 // };
 
-export const fetchContacts = createAsyncThunk(
-  'contacts/fetchContacts',
-  async () => {
-      const { data } = await axios.get('/contacts');
-      return data;
-  }
-)
+
 
 // async func
 // export const fetchContacts = () => async dispatch => {
@@ -34,26 +67,3 @@ export const fetchContacts = createAsyncThunk(
 //         dispatch(fetchContactsError(error));
 //     }
 // };
-
-export const addContact = text => dispatch => {
-    const contact = {
-        text,
-        completed: false
-    };
-
-    dispatch(actions.addContactRequest());
-
-    axios
-        .post('/contacts', contact)
-        .then(({ data }) => dispatch(actions.addContactSuccess(data))
-        .catch(error => dispatch(actions.addContactError(error))));
-};
-
-export const deleteContact = contactId => dispatch => {
-    dispatch(actions.deleteContactRequest());
-
-    axios
-        .delete(`/contacts/${contactId}`)
-        .then(() => dispatch(actions.deleteContactSuccess(contactId)))
-        .catch(error => dispatch(actions.deleteContactError(error)));
-}
