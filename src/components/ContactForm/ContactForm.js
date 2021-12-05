@@ -8,14 +8,14 @@ import s from './ContactForm.module.css';
 
 
 function ContactForm() {
-    const contacts = useSelector(selectors.getContacts);
+    const items = useSelector(selectors.getContacts);
     const dispatch = useDispatch();
 
     const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+    const [phone, setPhone] = useState('');
 
     let nameId = shortid.generate();
-    let numberId = shortid.generate();
+    let phoneId = shortid.generate();
     
     const handleChange = event => {
         const { name, value } = event.currentTarget;
@@ -25,8 +25,8 @@ function ContactForm() {
                 setName(value);
                 break;
             
-            case 'number':
-                setNumber(value);
+            case 'phone':
+                setPhone(value);
                 break;
             
             default:
@@ -34,26 +34,25 @@ function ContactForm() {
         }
     };
 
-    const checkName = name => {
-        return contacts.find(
-            contact => contact.name.toLowerCase() === name.toLowerCase(),
-        )
-    };
-
+    
     const handleSubmit = event => {
         event.preventDefault();
 
+        const checkName = name =>
+            items.find(
+                contact => contact.name.toLowerCase() === name.toLowerCase());
+
         if (checkName(name)) {
             return alert(`${name} is already in contacts.`);
+        } else {
+            dispatch(operations.addContact({name, phone}));
         }
-        
-        dispatch(operations.addContact(name, number));
         reset();
     };
 
     const reset = () => {
         setName('');
-        setNumber('');
+        setPhone('');
     };
 
     return (
@@ -79,16 +78,16 @@ function ContactForm() {
                 
             <label
                 className={s.form__title}
-                htmlFor={numberId}
+                htmlFor={phoneId}
             >
                 Number
             </label>
             <input
                 type="tel"
                 className={s.form__input}
-                name="number"
-                id={numberId}
-                value={number}
+                name="phone"
+                id={phoneId}
+                value={phone}
                 onChange={handleChange}
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"

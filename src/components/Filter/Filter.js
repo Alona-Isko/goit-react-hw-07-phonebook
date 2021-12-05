@@ -1,23 +1,27 @@
+import shortid from 'shortid';
+
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { actions, selectors } from "../../redux/contacts";
+import { selectors, changeFilter } from "../../redux/contacts";
 import s from './Filter.module.css';
 
+let filterId = shortid.generate();
 
-const Filter = () => {
+function Filter(){
     const value = useSelector(selectors.getFilter);
 
     const dispatch = useDispatch()
     
 
     return (
-        <label className={s.Filter__text}>
+        <label htmlFor={filterId} className={s.Filter__text}>
             Find contacts by name
             <input
                 type="text"
                 className={s.Filter__input}
                 value={value}
-                onChange={ev => dispatch(actions.changeFilter(ev.currentTarget.value))}
+                id={filterId}
+                onChange={ev => dispatch(changeFilter(ev.currentTarget.value))}
             />
         </label>
     )
@@ -29,6 +33,7 @@ Filter.propTypes = {
 };
 
 export default Filter;
+
 
 
 
